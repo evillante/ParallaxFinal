@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<title>Rich</title>
+		<link rel="stylesheet" type="text/css" href="copout.css">	
+		<script type="text/javascript" src="jquery.js"></script>
+	    <script data-require="angular.js@1.2.10" data-semver="1.2.10" src="http://code.angularjs.org/1.2.10/angular.js"></script>
+
+	    <script type="text/javascript" src="scripts.js"></script>	
+
+	</head>
+	
+	<body >
+
+		<div id="content-container" ng-app="app" ng-controller="mainCtrl" on-click="getPost(4)">
+			<div id="background-view"></div>
+			<
+			<div id="blog-nav">
+				<h3>Visually Defiant</h3>
+				<h5>STUFF : STUFF : STUFF</h5>
+			</div>
+			
+			<div id="content" >
+				<ul>
+					<li class="test-div new-test-div blog1" ng-repeat="blog in blogPostList">
+						<img class="blogImage" src="{{blog.image}}" alt="no image"/>
+						<span class="blogTitle">{{blog.title}}</span> 
+					</li>
+				<ul>
+			</div>
+			<div id="foreground-view" ></div>
+		</div>
+	</body>
+</html>
