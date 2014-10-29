@@ -49,14 +49,14 @@ body {margin:0px;}
 		position:absolute;
 	}
 	
-	.test-div{
+	.blogPost{
 	float:left;
 	width:450px; height:450px;
 	position:relative;
 	margin-top:0px;
 	margin-left:75px; margin-right:75px;
 	background-position:center;
-	background-image:url('heman.png');	
+	/*background-image:url('heman.png');	*/
 	overflow:hidden;
 	}
 	

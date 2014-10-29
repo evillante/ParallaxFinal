@@ -11,9 +11,9 @@
 	
 	<body >
 
-		<div id="content-container" ng-app="app" ng-controller="mainCtrl" on-click="getPost(4)">
+		<div id="content-container" ng-app="app" ng-controller="mainCtrl" >
 			<div id="background-view"></div>
-			<
+			
 			<div id="blog-nav">
 				<h3>Visually Defiant</h3>
 				<h5>STUFF : STUFF : STUFF</h5>
@@ -21,7 +21,7 @@
 			
 			<div id="content" >
 				<ul>
-					<li class="test-div new-test-div blog1" ng-repeat="blog in blogPostList">
+					<li class="blogPost {{blog.postClip}}" ng-repeat="blog in blogPostList track by $index">
 						<img class="blogImage" src="{{blog.image}}" alt="no image"/>
 						<span class="blogTitle">{{blog.title}}</span> 
 					</li>
