@@ -14,14 +14,19 @@
 		<div id="content-container" ng-app="app" ng-controller="mainCtrl" >
 			<div id="background-view"></div>
 			
-			<div id="blog-nav">
-				<h3>Visually Defiant</h3>
-				<h5>STUFF : STUFF : STUFF</h5>
-			</div>
+            <div id="nav-container">
+               <nav class="nav-bar">
+				    <div class="link"><a href="index.html">HOME</a></div>
+		    	    <div class="link"><a href="details.html">EVENT</a></div>
+				    <div class="link"><a href="gallery.html">GALLERY</a></div>
+				    <div class="link"><a href="grads.html">GRADS</a></div>
+				    <div class="link"><a href="https://www.facebook.com/VisuallyDefiant">BLOG</a></div>
+				</nav>
+            </div>
 			
 			<div id="content" >
 				<ul>
-					<li class="blogPost {{blog.postClip}}" ng-repeat="blog in blogPostList track by $index">
+					<li class="blogPost {{blog.postClip}}" ng-repeat="blog in blogPostList track by $index" ng-controller='randHeight' ng-style="getHeight()">
 						<img class="blogImage" src="{{blog.image}}" alt="no image"/>
 						<span class="blogTitle">{{blog.title}}</span> 
 					</li>
