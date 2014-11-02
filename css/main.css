@@ -1,4 +1,10 @@
-body {margin:0px; overflow-y:hidden;}
+/* Fonts */
+@font-face{
+	font-family: Lato;
+	src: url(../fonts/LATO-REG.TTF);
+}
+
+body {margin:0px; font-family:Lato;}
 
 #content-container {
 	width:100%; height:100%;
@@ -9,7 +15,7 @@ body {margin:0px; overflow-y:hidden;}
 
 #background-view {
 	width:100%; height:100%;
-	background-image: url('background.png');
+	background-image: url('../images/background.png');
 	position:fixed;
 	top:0px; left:0px;
 	z-index:2;
@@ -50,48 +56,66 @@ body {margin:0px; overflow-y:hidden;}
 	}
 	
 	.blogPost{
+	position:relative;
 	float:left;
 	width:450px; height:450px;
 	margin-left:70px; margin-right:70px;
 	}
 	
 	.clip1 {
-		-webkit-clip-path: url(clip1.svg);
+		-webkit-clip-path: url(../images/clips/clip1.svg);
 		/* Firefox*/
-		clip-path: url(clip1.svg#svgClip);
+		clip-path: url(../images/clips/clip1.svg#svgClip);
 		/* iOS support */
-		-webkit-mask: url(clip1.svg);
+		-webkit-mask: url(../images/clips/clip1.svg);
 	}
 	
 	.clip2 {
-	-webkit-clip-path: url(clip2.svg);
-    /* Firefox*/
-    clip-path: url(clip2.svg#svgClip);
-    /* iOS support */
-    -webkit-mask: url(clip2.svg);
+		-webkit-clip-path: url(../images/clips/clip2.svg);
+	    /* Firefox*/
+	    clip-path: url(../images/clips/clip2.svg#svgClip);
+	    /* iOS support */
+	    -webkit-mask: url(../images/clips/clip2.svg);
 	}
 
 	.clip3 {
-	-webkit-clip-path: url(clip3.svg);
-    /* Firefox*/
-    clip-path: url(clip3.svg#svgClip);
-    /* iOS support */
-    -webkit-mask: url(clip3.svg);
+		-webkit-clip-path: url(../images/clips/clip3.svg);
+	    /* Firefox*/
+	    clip-path: url(../images/clips/clip3.svg#svgClip);
+	    /* iOS support */
+	    -webkit-mask: url(../images/clips/clip3.svg);
 	}
 
 	.clip4 {
-	-webkit-clip-path: url(clip4.svg);
-    /* Firefox*/
-    clip-path: url(clip4.svg#svgClip);
-    /* iOS support */
-    -webkit-mask: url(clip4.svg);
+		-webkit-clip-path: url(../images/clips/clip4.svg);
+	    /* Firefox*/
+	    clip-path: url(../images/clips/clip4.svg#svgClip);
+	    /* iOS support */
+	    -webkit-mask: url(../images/clips/clip4.svg);
 	}	
 	
-	
+	.captionContainer {
+		position:absolute;
+		z-index:3;
+		width:100%;
+		top:45%;
+		background: rgba(50,50,50,0.8);
+		color:#eee;
+	}
+
+		.captionHold {
+			position:relative;
+			width:70%; height:100%;
+			padding:10px 0 10px 0;
+			text-align:center;
+			margin:0 auto;
+		}
+
+
 
 #foreground-view {
 	width:100%; height:100%;
-	background-image: url('foreground.png');
+	background-image: url('../images/foreground.png');
 	position:fixed;
 	top:0px; left:0px;
 	z-index:4;
@@ -148,7 +172,7 @@ nav a {
 	font-size: 15px;
 }
 
-
+.blogImage {width:450px; height:450px;}
 .nav-bar a::after {
 	position: absolute;
 	top: 100%;

@@ -82,10 +82,10 @@ $(document).ready(function() {
 			  		amountOfBlogs = postData.response.total_posts;
 			  		//store information to be displayes (per blog)
 			  		$scope.postImage = postData.response.posts[0].photos[0].alt_sizes[1].url;		//get post image
-			  		$scope.postTitle = postData.response.posts[0].title;							//get post title
+			  		$scope.postTitle = postData.response.posts[0].caption;							//get post title
 			  		$scope.blogData = postData.response;											//get post series id
 			  		$scope.randAng = "clip" + (1+ Math.floor(Math.random() * 4));					//give each post a random clip class
-
+			  		console.log($scope.postTitle);
 					$scope.blogPostList.push( {"postID" : $scope.blogData, "image" : $scope.postImage, "title" : $scope.postTitle, "postClip" : $scope.randAng} );
 					//get next blog post
 					blogsTaken++;
@@ -101,13 +101,19 @@ $(document).ready(function() {
 	
 	//generate random height. feeds into ng-style
 	app.controller('randHeight', function($scope){
-		$scope.y = 90 + Math.floor(Math.random() * (windowHeight-570));	
+		$scope.y = 90 + Math.floor(Math.random() * (windowHeight-650));	
 		$scope.getHeight = function(){
 			return {'margin-top':$scope.y+'px'};
 		}
 	})
 
 
+	 app.filter('stripText', function() {
+	    return function(text) {
+	      return String(text).replace(/<[^>]+>/gm, "").replace('&#8217;',"'");
+	    }
+	  }
+	);
 
 
 

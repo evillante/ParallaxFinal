@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Rich</title>
-		<link rel="stylesheet" type="text/css" href="copout.css">	
+		<link rel="stylesheet" type="text/css" href="css/main.css">	
 		<script type="text/javascript" src="jquery.js"></script>
 	    <script data-require="angular.js@1.2.10" data-semver="1.2.10" src="http://code.angularjs.org/1.2.10/angular.js"></script>
 
@@ -24,15 +24,22 @@
 				</nav>
             </div>
 			
-			<div id="content" >
+			<div id="content">
 				<ul>
-					<li class="blogPost {{blog.postClip}}" ng-repeat="blog in blogPostList track by $index" ng-controller='randHeight' ng-style="getHeight()">
-						<img class="blogImage" src="{{blog.image}}" alt="no image"/>
-						<span class="blogTitle">{{blog.title}}</span> 
+					<li class="blogPost" ng-controller='randHeight' ng-style="getHeight()" ng-repeat="blog in blogPostList track by $index" >
+						<!-- <div class="{{blog.postClip}} postShadow"></div> -->
+						<div class="{{blog.postClip}}" ng-mouseover="showCaption=true" ng-mouseleave="showCaption=false">
+							<img class="blogImage" src="{{blog.image}}" alt="no image"/>
+							<div class="captionContainer"  ng-show="showCaption">
+								<div class="captionHold">
+									<span class="blogCaption">{{blog.title | stripText}}</span>
+								</div>
+							</div>
+						</div>
 					</li>
 				<ul>
 			</div>
-			<div id="foreground-view" ></div>
+			<!-- <div id="foreground-view" ></div> -->
 		</div>
 	</body>
 </html>
