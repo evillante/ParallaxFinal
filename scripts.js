@@ -22,42 +22,33 @@ var amountOfBlogs = 0;
 var app = angular.module('app', []);
 
 $(document).ready(function() {
-
+	//define window size
 	windowWidth = $(window).width();
 	windowHeight = $(window).height();
-	
-	$back = $("#background-view");
-	$mid = $("#content");
-	$fore = $("#foreground-view");
-
+	//initial angular get
 	angular.element('#content-container').scope().getPost();
 
-	//------------------------------------------------------------------------------------	resize
 	$(window).resize(function() {
 		windowWidth = $(window).width();
 		windowHeight = $(window).height();
 	});
 
-	//------------------------------------------------------------------------------------	height of content divs
-	//distance from top of screen to the point where the blog post will touch the bottom
-	potHeight = (windowHeight - $('#blog-nav').height() )/2;
+	potHeight = (windowHeight - 450 )/2;
 
-	//------------------------------------------------------------------------------------	scroll movement / functionality
 	$(window).scroll(function() {	
-
 		scrollDist = $(window).scrollLeft();
 		docWidth = $(document).width();
-		//---------------------------------------------------------------	parallax image movement
-		$back.css('background-position', -scrollDist*0.2 + "px 0px");
-		$fore.css('background-position', -scrollDist*2 + "px 0px");
-		//---------------------------------------------------------------	scroll hits the end of the document
+
+		$(".b1").css('background-position', -scrollDist*0.2 + "px 0px");
+		$(".b2").css('background-position', -scrollDist*0.4 + "px 0px");
+
 		//restrict page generation to the number of blog posts
 		if( ((scrollDist + windowWidth)  >= (docWidth-3)) && blogsTaken < amountOfBlogs ) {
 			//call angular function
 			angular.element('#content-container').scope().getPost();	
 					
 		   pageAdd++;
-		   $mid.css('width' , 3000*pageAdd +'px');
+		   $("#content").css('width' , 3000*pageAdd +'px');
 		}
 	   
 	});
@@ -65,31 +56,37 @@ $(document).ready(function() {
 
 
 	app.controller('mainCtrl', function($scope, $scope, $http){
-		//array that contains all of the blog posts
-		$scope.blogPostList = [];
-
-		//function to get posts from tumblr
+		//api requirements
 		limit= 1;
 		consumerKey ="HEOkswS8esYqCMHCFlHqhhCa5ctvigQdwbEcz2fQD8rzPpE3bz";
-		account="visuallydefiant.tumblr.com"
+		account="visuallydefiant.tumblr.com"	
+			
+		//enlarge image for clicked blog
+		$scope.clickBlog = function(slot){
+			$scope.showSelected = true;
+			$http.jsonp('http://api.tumblr.com/v2/blog/'+ account + '/posts?callback=JSON_CALLBACK&api_key=' + consumerKey + '&limit=' + limit + '&offset=' + slot).success(function(postData) {
+				$scope.selectedBlogImage = postData.response.posts[0].photos[0].alt_sizes[0].url;
+			});
+		}		
+		//blog container
+		$scope.blogPostList = [];
 
-
-		//function to add blog posts (1 at a time)
+		//function to add blog posts
 		$scope.getPost = function(){
 			if(blogsTaken < block){
 				$http.jsonp('http://api.tumblr.com/v2/blog/'+ account + '/posts?callback=JSON_CALLBACK&api_key=' + consumerKey + '&limit=' + limit + '&offset=' + blogsTaken).success(function(postData) {
 			  		//find the number of posts in the blog
 			  		amountOfBlogs = postData.response.total_posts;
 			  		//store information to be displayes (per blog)
+			  		$scope.postImage = postData.response.posts[0].photos[0].alt_sizes[1].url;
 			  		$scope.postImage = postData.response.posts[0].photos[0].alt_sizes[1].url;		//get post image
 			  		$scope.postTitle = postData.response.posts[0].caption;							//get post title
 			  		$scope.blogData = postData.response;											//get post series id
-			  		$scope.randAng = "clip" + (1+ Math.floor(Math.random() * 4));					//give each post a random clip class
-			  		console.log($scope.postTitle);
-					$scope.blogPostList.push( {"postID" : $scope.blogData, "image" : $scope.postImage, "title" : $scope.postTitle, "postClip" : $scope.randAng} );
+			  		$scope.randAng = "clip" + (1+ Math.floor(Math.random() * 9));					//give each post a random clip class
+			  		//add elements to blog array
+					$scope.blogPostList.push( {"image" : $scope.postImage, "inf" : $scope.postTitle, "postClip" : $scope.randAng, "postSlot" : blogsTaken} );
 					//get next blog post
 					blogsTaken++;
-
 					//run the function until 
 					$scope.getPost();				
 				});	
@@ -98,15 +95,16 @@ $(document).ready(function() {
 			};	
 		};
 	})
+
 	
 	//generate random height. feeds into ng-style
-	app.controller('randHeight', function($scope){
-		$scope.y = 90 + Math.floor(Math.random() * (windowHeight-650));	
+	app.controller('blog', function($scope){
+		$scope.y = 80 + (Math.floor(Math.random() * potHeight));	
 		$scope.getHeight = function(){
 			return {'margin-top':$scope.y+'px'};
 		}
-	})
 
+	})
 
 	 app.filter('stripText', function() {
 	    return function(text) {
@@ -114,6 +112,7 @@ $(document).ready(function() {
 	    }
 	  }
 	);
+
 
 
 

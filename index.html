@@ -12,7 +12,8 @@
 	<body >
 
 		<div id="content-container" ng-app="app" ng-controller="mainCtrl" >
-			<div id="background-view"></div>
+			<div class="background-view b1"></div>
+			<div class="background-view b2"></div>
 			
             <div id="nav-container">
                <nav class="nav-bar">
@@ -22,24 +23,27 @@
 				    <div class="link"><a href="grads.html">GRADS</a></div>
 				    <div class="link"><a href="https://www.facebook.com/VisuallyDefiant">BLOG</a></div>
 				</nav>
+
+
+
             </div>
 			
 			<div id="content">
 				<ul>
-					<li class="blogPost" ng-controller='randHeight' ng-style="getHeight()" ng-repeat="blog in blogPostList track by $index" >
-						<!-- <div class="{{blog.postClip}} postShadow"></div> -->
-						<div class="{{blog.postClip}}" ng-mouseover="showCaption=true" ng-mouseleave="showCaption=false">
+					<li class="blogPost" ng-controller='blog' ng-style="getHeight()" ng-repeat="blog in blogPostList track by $index" ng-click="clickBlog(blog.postSlot)">
+						<div class="{{blog.postClip}}" ng-mouseover="showCaption=true" ng-mouseleave="showCaption=false" >
 							<img class="blogImage" src="{{blog.image}}" alt="no image"/>
 							<div class="captionContainer"  ng-show="showCaption">
 								<div class="captionHold">
-									<span class="blogCaption">{{blog.title | stripText}}</span>
+									<span class="blogCaption">{{blog.inf | stripText}}</span>
 								</div>
 							</div>
 						</div>
 					</li>
-				<ul>
+				</ul>
+				<div class="behindSelected" ng-click="showSelected=false" ng-show="showSelected"></div>
+				<img class="selectedImage" ng-show="showSelected" src="{{selectedBlogImage}}" alt="no image"/>
 			</div>
-			<!-- <div id="foreground-view" ></div> -->
 		</div>
 	</body>
 </html>
