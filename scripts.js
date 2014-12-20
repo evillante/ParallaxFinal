@@ -1,122 +1,58 @@
+var app = angular.module('app',[]);
 
-//variables
-var windowWidth;	//window Dimensions
-var windowHeight;
+app.controller('mainCTRL', function($scope,$http){
 
-var pageAdd =1;		//how many pages (of 5) have been displayed
-var potHeight;		//potential height of blog posts
-var randShape; 		//determines div clip
-var blogsPerPage = 5;
+	$scope.posterList = [];
 
-var limit;			//how many blog posts to get
-var consKey;		//consumer key
-var account;		//get from account
-var blogsTaken = 0;
-var block = blogsPerPage;	//variable for pull amount. Initially set as the number of blogs per 'page'
-var amountOfBlogs = 0;
-
-var app = angular.module('app', []);
-
-$(document).ready(function() {
-	//define window size
-	windowWidth = $(window).width();
-	windowHeight = $(window).height();
-	//initial angular get
-	angular.element('#content-container').scope().getPost();
-
-	$(window).resize(function() {
-		windowWidth = $(window).width();
-		windowHeight = $(window).height();
-	});
-
-	potHeight = (windowHeight - 450 )/2;
-
-	//make parallax, trigger angular function when scrolled to the end
-	$(window).scroll(function() {	
-		scrollDist = $(window).scrollLeft();
-		docWidth = $(document).width();
-
-		$(".b1").css('background-position', -scrollDist*0.2 + "px 0px");
-		$(".b2").css('background-position', -scrollDist*0.4 + "px 0px");
-
-		//restrict page generation to the number of blog posts
-		if( ((scrollDist + windowWidth)  >= (docWidth-3)) && blogsTaken < amountOfBlogs ) {
-			//call angular function
-			angular.element('#content-container').scope().getPost();	
-			//add width to blog container					
-		   pageAdd++;
-		   $("#content").css('width' , 3000*pageAdd +'px');
-		}
-	   
-	});
-});
-
-
-app.controller('mainCtrl', function($scope, $scope, $http){
-	//initially set the selected image to be a loading gif
-	var loadImg = "images/loading.png";
-	$scope.selectedBlogImage = loadImg;
-	//api requirements
-	limit= 1;
-	consumerKey ="HEOkswS8esYqCMHCFlHqhhCa5ctvigQdwbEcz2fQD8rzPpE3bz";
-	account="visuallydefiant.tumblr.com"	
-	//enlarge image when a blog is clicked
-	$scope.clickBlog = function(slot){
-		$scope.showSelected = true;
-		$http.jsonp('http://api.tumblr.com/v2/blog/'+ account + '/posts?callback=JSON_CALLBACK&api_key=' + consumerKey + '&limit=' + limit + '&offset=' + slot).success(function(postData) {
-			$scope.selectedBlogImage = postData.response.posts[0].photos[0].alt_sizes[0].url;
+	//get()
+	$scope.get = function(){
+		//all_docs to get a list of all douments in the database
+		//include_docs=true to get the fields of each result
+		$http.get('http://emiliovillante.iriscouch.com/postertest/_all_docs?include_docs=true').success(function(data){
+			angular.forEach(data.rows ,function(row){
+				$scope.posterList.push(row.doc)
+			})
+			console.log($scope.posterList)
 		})
-	}		
-	//remove selected view and set the selected image to be a loading gif
-	$scope.clickOut = function(){
-		$scope.showSelected=false;
-		$scope.selectedBlogImage = loadImg;
+	}
+	$scope.get();
+
+	//post()
+	$scope.post = function(){
+		var obj = {
+			"artist":$scope.artist,
+			 "style":$scope.style
+			}
+		$http.post('http://emiliovillante.iriscouch.com/postertest',obj).success(function(data){
+			console.log(data)
+			$scope.posterList.push({
+				"_id":data.id,
+				"_rev":data.rev,
+				"artist":$scope.artist,
+				"style":$scope.style
+			})
+		})
 	}
 
-	//blog container
-	$scope.blogPostList = [];
-	//function to add blog posts
-	$scope.getPost = function(){
-		if(blogsTaken < block){
-			$http.jsonp('http://api.tumblr.com/v2/blog/'+ account + '/posts?callback=JSON_CALLBACK&api_key=' + consumerKey + '&limit=' + limit + '&offset=' + blogsTaken).success(function(postData) {
-		  		//find the number of posts in the blog
-		  		amountOfBlogs = postData.response.total_posts;
-		  		//store information to be displayes (per blog)
-		  		$scope.postImage = postData.response.posts[0].photos[0].alt_sizes[1].url;
-		  		$scope.postImage = postData.response.posts[0].photos[0].alt_sizes[1].url;		//get post image
-		  		$scope.postTitle = postData.response.posts[0].caption;							//get post title
-		  		$scope.blogData = postData.response;											//get post series id
-		  		$scope.randAng = "clip" + (1+ Math.floor(Math.random() * 9));					//give each post a random clip class
-		  		//add elements to blog array
-				$scope.blogPostList.push( {"image" : $scope.postImage, "inf" : $scope.postTitle, "postClip" : $scope.randAng, "postSlot" : blogsTaken} );
-				//get next blog post
-				blogsTaken++;
-				//run the function until 
-				$scope.getPost();				
-			});	
-		} else {
-			block += 5;
-		};	
-	};
-})
-
-
-//generate random height. feeds into ng-style
-app.controller('blog', function($scope){
-	$scope.y = 80 + (Math.floor(Math.random() * potHeight));	
-	$scope.getHeight = function(){
-		return {'margin-top':$scope.y+'px'};
+	//edit(artist,style)
+	$scope.put = function(id, artist, style){
+		console.log(artist)
+		//rev needs to be +1 - current rev addon
+		var obj = {
+			"_id":"51c073193d667beaceb8b4797b000db5",
+			"_rev":"2-bd5d9e427a6dc89411f9cb2d1707590a",
+			"artist":artist,
+			"style":style
+		}
+		$http.put('http://emiliovillante.iriscouch.com/postertest/51c073193d667beaceb8b4797b000db5',obj).success(function(data){
+			console.log(data)
+		})		
 	}
+})
+
+app.controller('posterRowCtrl', function($scope){
 
 })
-//remove html tags and ascii
-app.filter('stripText', function() {
-    return function(text) {
-      return String(text).replace(/<[^>]+>/gm, "").replace('&#8217;',"'");
-    }
-  }
-);
-
 
 
 

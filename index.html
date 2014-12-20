@@ -1,49 +1,88 @@
 <html>
 	<head>
 		<title>Rich</title>
+	    <link rel="stylesheet" type="text/css" href="css/reset.css">		
 		<link rel="stylesheet" type="text/css" href="css/main.css">	
-		<script type="text/javascript" src="jquery.js"></script>
 	    <script data-require="angular.js@1.2.10" data-semver="1.2.10" src="http://code.angularjs.org/1.2.10/angular.js"></script>
-
 	    <script type="text/javascript" src="scripts.js"></script>	
 
 	</head>
 	
-	<body >
+	<body ng-app="app">
+		<!-- ================ HEAD ================== -->
+		<!-- ======================================== -->
+		<div class="head">
+			<h1>FRANK'S POSTER COLLECTION</h1>
+		</div>
 
-		<div id="content-container" ng-app="app" ng-controller="mainCtrl" >
-			<div class="background-view b1"></div>
-			<div class="background-view b2"></div>
-			
-            <div id="nav-container">
-               <nav class="nav-bar">
-				    <div class="link"><a href="index.html">HOME</a></div>
-		    	    <div class="link"><a href="details.html">EVENT</a></div>
-				    <div class="link"><a href="gallery.html">GALLERY</a></div>
-				    <div class="link"><a href="grads.html">GRADS</a></div>
-				    <div class="link"><a href="https://www.facebook.com/VisuallyDefiant">BLOG</a></div>
-				</nav>
+		<div class="cont" ng-controller="mainCTRL">
+			<!-- ================= PUT ================== -->
+			<!-- ======================================== -->
+			<div class="mainCont put">
+				<div class="send" ng-click="post()">
+					<h3>ADD</h3>
+				</div>
+
+				<div class="inputCont">
+					<h5>Artist</h5>
+					 <input class="putInput" type="text" ng-model="artist">
+				</div>		
+				
+				<div class="inputCont">
+					<h5>Style</h5>
+					 <input class="putInput" type="text" ng-model="style">
+				</div>							
+			</div>
 
 
 
-            </div>
-			
-			<div id="content">
-				<ul>
-					<li class="blogPost" ng-controller='blog' ng-style="getHeight()" ng-repeat="blog in blogPostList track by $index" ng-click="clickBlog(blog.postSlot)">
-						<div class="{{blog.postClip}}" ng-mouseover="showCaption=true" ng-mouseleave="showCaption=false" >
-							<img class="blogImage" src="{{blog.image}}" alt="no image"/>
-							<div class="captionContainer"  ng-show="showCaption">
-								<div class="captionHold">
-									<span class="blogCaption">{{blog.inf | stripText}}</span>
-								</div>
-							</div>
+			<!-- ================= GET ================== -->
+			<!-- ======================================== -->	
+			<div class="mainCont get">
+				<ul class="posterRows clearfix">
+					<!-- NG REPEAT HERE -->
+					<li class="row" ng-controller="posterRowCtrl" ng-repeat="rows in posterList" ng-mouseover="overList=true" ng-mouseleave="overList=false">
+						<div class="rowInfo" ng-class="{evenRow: $even, hoverRow: overList==true}" ng-click="editTog=true">
+							<h5>{{rows.artist}}</h5>
+							<h5>{{rows.style}}</h5>
 						</div>
+
+						<div class="rowEditButt" ng-show="overList==true"></div>
+						<div class="editCont" ng-show="editTog==true">
+							<button class="cancel" ng-click="editTog=false">Cancel</button>
+							<button class="save" ng-click="editTog=false">Save</button>
+						</div>
+
 					</li>
+
 				</ul>
-				<div class="behindSelected" ng-click="clickOut()" ng-show="showSelected"></div>
-				<img class="selectedImage" ng-show="showSelected" src="{{selectedBlogImage}}" alt="no image"/>
 			</div>
 		</div>
 	</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
